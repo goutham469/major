@@ -1,0 +1,14 @@
+
+POST http://3.108.66.240:5000/predict
+Content-Type: "application/json"
+
+{
+    "f1":1.2,
+    "f2":0.5,
+    "f3":2.1,
+    "f4":0.9
+}
+
+curl -X POST http:localhost:5000/predict \
+-H "Content-Type: application/json" \
+-d '{"f1": 1.2, "f2": 0.5, "f3": 2.1, "f4": 0.9}'
