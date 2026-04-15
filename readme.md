@@ -21,12 +21,12 @@ Located in *server.py* .
 6. `python3 -m venv venv`
 7. `source venv/bin/activate`
 8. `pip install flask numpy`
-9. `python app.py` The service is running now, don't close this
+9. `python master.py` The service is running now, don't close this
 10. `cd ensemble`
 11. `python3 -m venv venv`
 12. `source venv/bin/activate`
-13. `pip install flask`
-14. `python app.py` The service is running now, don't close this.
+13. `pip install flask requests flask-cors`
+14. `python server.py` The service is running now, don't close this.
 15. Call the servive with `http://ipV4:5002/predict`, as *POST*, and body as 
 ```
 payload = {

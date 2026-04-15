@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quantum Ensemble Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+```
+    .container {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        width: 320px;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    .result {
+        margin-top: 15px;
+        padding: 10px;
+        background: #eef;
+        border-radius: 5px;
+    }
+</style>
+```
+
+</head>
+<body>
+
+<div class="container">
+    <h2>Ensemble Predictor</h2>
+
+```
+<input type="number" id="f1" placeholder="Feature 1" step="any">
+<input type="number" id="f2" placeholder="Feature 2" step="any">
+<input type="number" id="f3" placeholder="Feature 3" step="any">
+<input type="number" id="f4" placeholder="Feature 4" step="any">
+
+<button onclick="predict()">Predict</button>
+
+<div class="result" id="result" style="display:none;"></div>
+```
+
+</div>
+
+<script>
+async function predict() {
+    const f1 = parseFloat(document.getElementById("f1").value);
+    const f2 = parseFloat(document.getElementById("f2").value);
+    const f3 = parseFloat(document.getElementById("f3").value);
+    const f4 = parseFloat(document.getElementById("f4").value);
+
+    const resDiv = document.getElementById("result");
+
+    try {
+        const response = await fetch("http://3.108.66.240:5002/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ f1, f2, f3, f4 })
+        });
+
+        const data = await response.json();
+
+        resDiv.style.display = "block";
+
+        if (data.error) {
+            resDiv.innerHTML = `<b>Error:</b> ${data.error}`;
+            return;
+        }
+
+        resDiv.innerHTML = `
+            <b>Final Prediction:</b> ${data.final_prediction}<br>
+            <b>Final Probability:</b> ${data.final_probability.toFixed(4)}<br><br>
+
+            <b>QNN:</b><br>
+            Prediction: ${data.models.QNN.prediction}<br>
+            Probability: ${data.models.QNN.probability.toFixed(4)}<br><br>
+
+            <b>QVC:</b><br>
+            Prediction: ${data.models.QVC.prediction}<br>
+            Probability: ${data.models.QVC.probability.toFixed(4)}
+        `;
+
+    } catch (err) {
+        resDiv.style.display = "block";
+        resDiv.innerHTML = `<b>Request failed:</b> ${err}`;
+    }
+}
+</script>
+
+</body>
+</html>

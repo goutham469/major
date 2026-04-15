@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
+from flask_cors import CORS
+CORS(app)
 
 QNN_URL = "http://localhost:5000/predict"
 QVC_URL = "http://localhost:5001/predict"
